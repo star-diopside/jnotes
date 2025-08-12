@@ -1,0 +1,10 @@
+spring:
+  threads:
+    virtual:
+      enabled: true
+  jpa:
+    open-in-view: true
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true

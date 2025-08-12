@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+  <meta charset="utf-8" th:remove="all"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" th:remove="all"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous" th:remove="all"/>
+  <link href="../../static/css/layout.css" rel="stylesheet" th:remove="all"/>
+  <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Home</title>
+</head>
+<body>
+<div class="container">
+  <div layout:fragment="content">
+    <h1 class="pb-2 mt-4 mb-2 border-bottom">Home</h1>
+    <div class="list-group">
+      <a href="../users/index.html" th:href="@{/users}" class="list-group-item list-group-item-action">ユーザ一覧</a>
+      <a href="../todos/index.html" th:href="@{/todos}" class="list-group-item list-group-item-action">TODO一覧</a>
+      <a href="../todos/create.html" th:href="@{/todos/create}" class="list-group-item list-group-item-action">TODO登録</a>
+      <a href="../files/index.html" th:href="@{/files}" class="list-group-item list-group-item-action">ファイル一覧</a>
+      <a href="../files/create.html" th:href="@{/files/create}" class="list-group-item list-group-item-action">ファイル登録</a>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+</body>
+</html>
