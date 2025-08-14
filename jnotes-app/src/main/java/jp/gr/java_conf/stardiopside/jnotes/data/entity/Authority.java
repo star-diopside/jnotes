@@ -39,9 +39,6 @@ public class Authority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(insertable = false, updatable = false)
-    private Long userId;
-
     private String authority;
 
     @Column(updatable = false)
@@ -64,7 +61,7 @@ public class Authority {
     private Integer version;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn
     private User user;
 
 }

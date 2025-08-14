@@ -17,7 +17,7 @@
     <div class="row mb-3">
       <label for="fileName" class="col-form-label col-sm-2">ファイル名</label>
       <div class="col-sm-10">
-        <span class="form-control-plaintext"><a th:href="@{{path}/files/{id}/data(path=${path},id=${fileInfo.id})}" th:text="${fileInfo.fileName}" id="fileName" href="javascript:void(0);">xxxx.txt</a></span>
+        <span class="form-control-plaintext"><a th:href="@{/files/{id}/data(id=${fileInfo.id})}" th:text="${fileInfo.fileName}" id="fileName" href="javascript:void(0);">xxxx.txt</a></span>
       </div>
     </div>
     <div class="row mb-3">
@@ -53,8 +53,8 @@
     <div class="row mb-3">
       <div class="col-sm-12">
         <div class="float-end">
-          <a th:href="@{{path}/files(path=${path})}" class="btn btn-secondary" href="index.html" role="button">一覧</a>
-          <a th:href="@{{path}/files/{id}/edit(path=${path},id=${fileInfo.id})}" class="btn btn-secondary" href="edit.html" role="button">編集</a>
+          <a th:href="@{/files}" class="btn btn-secondary" href="index.html" role="button">一覧</a>
+          <a th:href="@{/files/{id}/edit(id=${fileInfo.id})}" class="btn btn-secondary" href="edit.html" role="button">編集</a>
         </div>
       </div>
     </div>

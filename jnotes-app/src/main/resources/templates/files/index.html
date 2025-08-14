@@ -28,16 +28,18 @@
       <tbody th:remove="all-but-first" th:each="file : ${files}">
         <tr>
           <td class="align-baseline" th:text="${file.id}">1</td>
-          <td class="align-baseline"><a th:href="@{{path}/files/{id}/data(path=${path},id=${file.id})}" th:text="${file.fileName}" href="javascript:void(0);">xxxx.txt</a></td>
+          <td class="align-baseline"><a th:href="@{/files/{id}/data(id=${file.id})}" th:text="${file.fileName}" href="javascript:void(0);">xxxx.txt</a></td>
           <td class="align-baseline" th:text="${#numbers.formatInteger(file.length, 1, 'COMMA')}">1,024</td>
           <td class="align-baseline" th:text="${#temporals.format(file.createdAt, 'yyyy/MM/dd HH:mm:ss')}">2021/01/01 00:00:00</td>
           <td class="align-baseline" th:text="${#temporals.format(file.updatedAt, 'yyyy/MM/dd HH:mm:ss')}">2021/01/01 00:00:00</td>
           <td class="align-baseline text-center">
-            <form th:action="@{{path}/files/{id}(path=${path},id=${file.id})}" th:method="delete" role="form">
-              <a th:href="@{{path}/files/{id}(path=${path},id=${file.id})}" class="btn btn-secondary" href="show.html" role="button">詳細</a>
-              <a th:href="@{{path}/files/{id}/edit(path=${path},id=${file.id})}" class="btn btn-secondary" href="edit.html" role="button">編集</a>
+            <form th:action="@{/files/{id}(id=${file.id})}" th:method="delete" role="form">
+              <a th:href="@{/files/{id}(id=${file.id})}" class="btn btn-secondary" href="show.html" role="button">詳細</a>
+              <a th:href="@{/files/{id}/edit(id=${file.id})}" class="btn btn-secondary" href="edit.html" role="button">編集</a>
               <input type="submit" value="削除" class="btn btn-danger"/>
               <input type="hidden" name="version" th:value="${file.version}"/>
+              <input type="hidden" name="fileData.id" th:value="${file.fileDataId}"/>
+              <input type="hidden" name="fileData.version" th:value="${file.fileDataVersion}"/>
             </form>
           </td>
         </tr>

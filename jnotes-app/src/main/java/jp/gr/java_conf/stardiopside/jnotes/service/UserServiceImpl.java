@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserService {
                 .toList();
         user.setAuthorities(authorities);
         userRepository.save(user);
-        authorities.forEach(authority -> authority.setUserId(user.getId()));
         return user;
     }
 }

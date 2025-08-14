@@ -4,6 +4,8 @@ plugins {
 
 dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("commons-codec:commons-codec")
+    implementation("org.apache.commons:commons-lang3")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-security")

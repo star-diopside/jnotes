@@ -2,8 +2,8 @@ package jp.gr.java_conf.stardiopside.jnotes.web.controller;
 
 import jakarta.validation.Valid;
 import jp.gr.java_conf.stardiopside.jnotes.data.entity.Todo;
-import jp.gr.java_conf.stardiopside.jnotes.service.Around;
 import jp.gr.java_conf.stardiopside.jnotes.service.TodoService;
+import jp.gr.java_conf.stardiopside.jnotes.value.Around;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -51,7 +52,7 @@ public class TodosController {
     }
 
     @PostMapping
-    public ModelAndView save(@Valid Todo todo, BindingResult bindingResult,
+    public ModelAndView save(@Valid @ModelAttribute Todo todo, BindingResult bindingResult,
                              RedirectAttributes redirectAttributes, Locale locale) {
         return save(todo, bindingResult, redirectAttributes, locale,
                 "todos/create", "messages.success-create");
@@ -63,18 +64,17 @@ public class TodosController {
     }
 
     @PutMapping("/{id}")
-    public ModelAndView update(@Valid Todo todo, BindingResult bindingResult,
+    public ModelAndView update(@Valid @ModelAttribute Todo todo, BindingResult bindingResult,
                                RedirectAttributes redirectAttributes, Locale locale) {
         return save(todo, bindingResult, redirectAttributes, locale,
                 "todos/edit", "messages.success-update");
     }
 
     @DeleteMapping("/{id}")
-    public String delete(Todo todo, RedirectAttributes redirectAttributes, Locale locale) {
+    public String delete(@ModelAttribute Todo todo, RedirectAttributes redirectAttributes, Locale locale) {
         todoService.delete(todo);
         var messages = new MessageSourceAccessor(messageSource, locale);
-        redirectAttributes.addFlashAttribute("success",
-                messages.getMessage("messages.success-delete"));
+        redirectAttributes.addFlashAttribute("success", messages.getMessage("messages.success-delete"));
         return "redirect:/todos";
     }
 
@@ -85,7 +85,7 @@ public class TodosController {
                         .addObject("todo", todo)
                         .addObject("prev", node.prev())
                         .addObject("next", node.next()))
-                .orElse(new ModelAndView("errors/404", HttpStatus.NOT_FOUND));
+                .orElseGet(() -> new ModelAndView("errors/404", HttpStatus.NOT_FOUND));
     }
 
     private ModelAndView save(Todo todo, BindingResult bindingResult,
