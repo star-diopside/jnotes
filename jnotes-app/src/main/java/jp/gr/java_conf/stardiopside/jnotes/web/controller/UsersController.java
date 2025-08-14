@@ -1,5 +1,7 @@
 package jp.gr.java_conf.stardiopside.jnotes.web.controller;
 
+import jp.gr.java_conf.stardiopside.jnotes.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,19 +9,30 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/users")
 public class UsersController {
 
+    private final UserService userService;
+
+    public UsersController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping
-    public String index() {
-        throw new UnsupportedOperationException();
+    public ModelAndView index() {
+        return new ModelAndView("users/index")
+                .addObject("users", userService.list());
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable Long id) {
-        throw new UnsupportedOperationException();
+    public ModelAndView show(@PathVariable Long id) {
+        return userService.find(id)
+                .map(user -> new ModelAndView("users/show")
+                        .addObject("user", user))
+                .orElseGet(() -> new ModelAndView("errors/404", HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/create")

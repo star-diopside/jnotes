@@ -4,10 +4,13 @@ import jakarta.transaction.Transactional;
 import jp.gr.java_conf.stardiopside.jnotes.data.entity.Authority;
 import jp.gr.java_conf.stardiopside.jnotes.data.entity.User;
 import jp.gr.java_conf.stardiopside.jnotes.data.repository.UserRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,6 +22,18 @@ public class UserServiceImpl implements UserService {
                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    @Transactional
+    public List<User> list() {
+        return userRepository.findAll(Sort.by("id").ascending());
+    }
+
+    @Override
+    @Transactional
+    public Optional<User> find(Long id) {
+        return userRepository.findById(id);
     }
 
     @Override
