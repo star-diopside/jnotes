@@ -7,6 +7,7 @@ import jp.gr.java_conf.stardiopside.jnotes.web.form.FileCreateForm;
 import jp.gr.java_conf.stardiopside.jnotes.web.form.FileEditForm;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.Nullable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.core.io.ByteArrayResource;
@@ -16,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -82,8 +82,7 @@ public class FilesController {
     public ModelAndView save(@Valid @ModelAttribute("form") FileCreateForm form, BindingResult bindingResult,
                              RedirectAttributes redirectAttributes, Locale locale) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("files/create")
-                    .addObject("form", form);
+            return new ModelAndView("files/create");
         }
 
         var fileInfo = fileService.save(form.getFile());
@@ -105,8 +104,7 @@ public class FilesController {
     public ModelAndView update(@Valid @ModelAttribute("form") FileEditForm form, BindingResult bindingResult,
                                RedirectAttributes redirectAttributes, Locale locale) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("files/edit")
-                    .addObject("form", form);
+            return new ModelAndView("files/edit");
         }
 
         return fileService.update(form.getFile(), form.toFileInfo(), form.getFileDataVersion())

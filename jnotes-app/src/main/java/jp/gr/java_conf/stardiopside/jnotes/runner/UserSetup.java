@@ -21,7 +21,7 @@ public class UserSetup implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         if (userRepository.count() == 0) {
-            userService.create("admin", "admin", "ADMIN", "USER");
+            userService.create("admin", "admin", true, "ADMIN", "USER");
         }
     }
 }

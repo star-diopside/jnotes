@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    boolean existsByUsername(String username);
+
     @EntityGraph(attributePaths = "authorities")
     Optional<User> findByUsername(String username);
 

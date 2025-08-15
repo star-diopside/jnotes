@@ -5,8 +5,8 @@ import jp.gr.java_conf.stardiopside.jnotes.value.FileInfoData;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
+import org.jspecify.annotations.Nullable;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -15,8 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class FileEditForm {
 
-    @Nullable
-    private MultipartFile file;
+    private @Nullable MultipartFile file;
 
     private Long id;
 
@@ -24,8 +23,7 @@ public class FileEditForm {
 
     private String updateFileName;
 
-    @Nullable
-    private String contentType;
+    private @Nullable String contentType;
 
     private Integer length;
 

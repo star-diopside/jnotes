@@ -1,6 +1,6 @@
 package jp.gr.java_conf.stardiopside.jnotes.value;
 
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public record DownloadData(
         String fileName,

@@ -14,6 +14,7 @@
   <div layout:fragment="content">
     <h1 class="pb-2 mt-4 mb-2 border-bottom">ユーザ一覧</h1>
     <div th:if="${success}" th:text="${success}" class="alert alert-success" role="alert">メッセージ</div>
+    <div th:if="${error}" th:text="${error}" class="alert alert-danger" role="alert">エラーメッセージ</div>
     <table class="table">
       <thead>
         <tr>
@@ -39,6 +40,7 @@
               <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-secondary" href="show.html" role="button">詳細</a>
               <a th:href="@{/users/{id}/edit(id=${user.id})}" class="btn btn-secondary" href="edit.html" role="button">編集</a>
               <input type="submit" value="削除" class="btn btn-danger"/>
+              <input type="hidden" name="version" th:value="${user.version}"/>
             </form>
           </td>
         </tr>
