@@ -8,10 +8,12 @@ import jp.gr.java_conf.stardiopside.jnotes.value.UserData;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.jspecify.annotations.Nullable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 @Data
@@ -39,7 +41,7 @@ public class UserEditForm implements Serializable {
 
     private LocalDateTime updatedAt;
 
-    private Integer version;
+    private @Nullable Integer version;
 
     public UserEditForm(User user) {
         id = user.getId();
@@ -61,7 +63,7 @@ public class UserEditForm implements Serializable {
                 username,
                 password,
                 enabled,
-                version,
+                Objects.requireNonNull(version),
                 roles.stream().map(Enum::name).toList());
     }
 }

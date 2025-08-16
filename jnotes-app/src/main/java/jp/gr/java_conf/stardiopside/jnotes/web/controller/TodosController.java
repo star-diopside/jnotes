@@ -27,11 +27,11 @@ import java.util.OptionalLong;
 public class TodosController {
 
     private final TodoService todoService;
-    private final MessageSource messageSource;
+    private final MessageSourceAccessor messages;
 
     public TodosController(TodoService todoService, MessageSource messageSource) {
         this.todoService = todoService;
-        this.messageSource = messageSource;
+        this.messages = new MessageSourceAccessor(messageSource);
     }
 
     @GetMapping
@@ -73,8 +73,8 @@ public class TodosController {
     @DeleteMapping("/{id}")
     public String delete(@ModelAttribute Todo todo, RedirectAttributes redirectAttributes, Locale locale) {
         todoService.delete(todo);
-        var messages = new MessageSourceAccessor(messageSource, locale);
-        redirectAttributes.addFlashAttribute("success", messages.getMessage("messages.success-delete"));
+        redirectAttributes.addFlashAttribute("success",
+                messages.getMessage("messages.success-delete", locale));
         return "redirect:/todos";
     }
 
@@ -102,8 +102,8 @@ public class TodosController {
         }
 
         todo = todoService.save(todo);
-        var messages = new MessageSourceAccessor(messageSource, locale);
-        redirectAttributes.addFlashAttribute("success", messages.getMessage(successMessage));
+        redirectAttributes.addFlashAttribute("success",
+                messages.getMessage(successMessage, locale));
         return new ModelAndView("redirect:/todos/{id}")
                 .addObject("id", todo.getId());
     }

@@ -35,14 +35,14 @@ public class UsersController {
 
     private final UserService userService;
     private final PasswordMatchValidator passwordMatchValidator;
-    private final MessageSource messageSource;
+    private final MessageSourceAccessor messages;
 
     public UsersController(UserService userService,
                            PasswordMatchValidator passwordMatchValidator,
                            MessageSource messageSource) {
         this.userService = userService;
         this.passwordMatchValidator = passwordMatchValidator;
-        this.messageSource = messageSource;
+        this.messages = new MessageSourceAccessor(messageSource);
     }
 
     @ModelAttribute("createForm")
@@ -85,23 +85,27 @@ public class UsersController {
             return new ModelAndView("users/create");
         }
 
-        var messages = new MessageSourceAccessor(messageSource, locale);
         try {
             var user = userService.create(form.getUsername(), form.getPassword(), form.getEnabled(),
                     form.getRoles().stream().map(Enum::name).toArray(String[]::new));
-            redirectAttributes.addFlashAttribute("success", messages.getMessage("messages.success-create"));
+            redirectAttributes.addFlashAttribute("success",
+                    messages.getMessage("messages.success-create", locale));
             return new ModelAndView("redirect:/users/{id}")
                     .addObject("id", user.getId());
         } catch (BusinessException e) {
-            redirectAttributes.addFlashAttribute("error", e.getResultMessage().getMessage(messages));
+            redirectAttributes.addFlashAttribute("error",
+                    e.getResultMessage().getMessage(messages, locale));
             redirectAttributes.addFlashAttribute("createForm", form);
             return new ModelAndView("redirect:/users/create");
         }
     }
 
     @GetMapping("/{id}/edit")
-    public ModelAndView edit(@PathVariable Long id) {
-        return userService.find(id)
+    public ModelAndView edit(@ModelAttribute("editForm") UserEditForm form) {
+        if (form.getVersion() != null) {
+            return new ModelAndView("users/edit");
+        }
+        return userService.find(form.getId())
                 .map(user -> new ModelAndView("users/edit")
                         .addObject("editForm", new UserEditForm(user)))
                 .orElseGet(() -> new ModelAndView("errors/404", HttpStatus.NOT_FOUND));
@@ -115,25 +119,32 @@ public class UsersController {
             return new ModelAndView("users/edit");
         }
 
-        return userService.update(form.toUserData())
-                .map(user -> {
-                    var messages = new MessageSourceAccessor(messageSource, locale);
-                    redirectAttributes.addFlashAttribute("success",
-                            messages.getMessage("messages.success-update"));
-                    return new ModelAndView("redirect:/users/{id}")
-                            .addObject("id", user.getId());
-                })
-                .orElseGet(() -> new ModelAndView("errors/404", HttpStatus.NOT_FOUND));
+        try {
+            return userService.update(form.toUserData())
+                    .map(user -> {
+                        redirectAttributes.addFlashAttribute("success",
+                                messages.getMessage("messages.success-update", locale));
+                        return new ModelAndView("redirect:/users/{id}")
+                                .addObject("id", user.getId());
+                    })
+                    .orElseGet(() -> new ModelAndView("errors/404", HttpStatus.NOT_FOUND));
+        } catch (BusinessException e) {
+            redirectAttributes.addFlashAttribute("error",
+                    e.getResultMessage().getMessage(messages, locale));
+            redirectAttributes.addFlashAttribute("editForm", form);
+            return new ModelAndView("redirect:/users/{id}/edit");
+        }
     }
 
     @DeleteMapping("/{id}")
     public String delete(@ModelAttribute User user, RedirectAttributes redirectAttributes, Locale locale) {
-        var messages = new MessageSourceAccessor(messageSource, locale);
         try {
             userService.delete(user);
-            redirectAttributes.addFlashAttribute("success", messages.getMessage("messages.success-delete"));
+            redirectAttributes.addFlashAttribute("success",
+                    messages.getMessage("messages.success-delete", locale));
         } catch (BusinessException e) {
-            redirectAttributes.addFlashAttribute("error", e.getResultMessage().getMessage(messages));
+            redirectAttributes.addFlashAttribute("error",
+                    e.getResultMessage().getMessage(messages, locale));
         }
         return "redirect:/users";
     }

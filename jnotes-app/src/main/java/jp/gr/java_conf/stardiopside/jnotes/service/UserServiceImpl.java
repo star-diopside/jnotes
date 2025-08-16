@@ -80,7 +80,17 @@ public class UserServiceImpl implements UserService {
                 .map(user -> !Objects.equals(user.getId(), userData.id()))
                 .orElse(false);
         if (existsUsername) {
-            throw new BusinessException(new ResultMessage("messages.error-deleteCurrentUser"));
+            throw new BusinessException(new ResultMessage("messages.error-alreadyExistsUser"));
+        }
+
+        if (!userData.enabled()) {
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
+            var authUser = userRepository.findByUsername(authentication.getName())
+                    .orElseThrow(ResourceNotFoundException::new);
+
+            if (Objects.equals(authUser.getId(), userData.id())) {
+                throw new BusinessException(new ResultMessage("messages.error-disableCurrentUser"));
+            }
         }
 
         return userRepository.findById(userData.id()).map(user -> {
@@ -119,7 +129,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void delete(User user) {
-        var authentication = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication());
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
         var authUser = userRepository.findByUsername(authentication.getName())
                 .orElseThrow(ResourceNotFoundException::new);
 

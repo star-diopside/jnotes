@@ -38,11 +38,11 @@ import java.util.Locale;
 public class FilesController {
 
     private final FileService fileService;
-    private final MessageSource messageSource;
+    private final MessageSourceAccessor messages;
 
     public FilesController(FileService fileService, MessageSource messageSource) {
         this.fileService = fileService;
-        this.messageSource = messageSource;
+        this.messages = new MessageSourceAccessor(messageSource);
     }
 
     @GetMapping
@@ -86,8 +86,8 @@ public class FilesController {
         }
 
         var fileInfo = fileService.save(form.getFile());
-        var messages = new MessageSourceAccessor(messageSource, locale);
-        redirectAttributes.addFlashAttribute("success", messages.getMessage("messages.success-create"));
+        redirectAttributes.addFlashAttribute("success",
+                messages.getMessage("messages.success-create", locale));
         return new ModelAndView("redirect:/files/{id}")
                 .addObject("id", fileInfo.getId());
     }
@@ -109,9 +109,8 @@ public class FilesController {
 
         return fileService.update(form.getFile(), form.toFileInfo(), form.getFileDataVersion())
                 .map(fileInfo -> {
-                    var messages = new MessageSourceAccessor(messageSource, locale);
                     redirectAttributes.addFlashAttribute("success",
-                            messages.getMessage("messages.success-update"));
+                            messages.getMessage("messages.success-update", locale));
                     return new ModelAndView("redirect:/files/{id}")
                             .addObject("id", fileInfo.getId());
                 })
@@ -121,8 +120,8 @@ public class FilesController {
     @DeleteMapping("/{id}")
     public String delete(@ModelAttribute FileInfo fileInfo, RedirectAttributes redirectAttributes, Locale locale) {
         fileService.delete(fileInfo);
-        var messages = new MessageSourceAccessor(messageSource, locale);
-        redirectAttributes.addFlashAttribute("success", messages.getMessage("messages.success-delete"));
+        redirectAttributes.addFlashAttribute("success",
+                messages.getMessage("messages.success-delete", locale));
         return "redirect:/files";
     }
 
