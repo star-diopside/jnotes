@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class FileInfo {
+public class FileInfo implements Cloneable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,4 +66,12 @@ public class FileInfo {
     @OneToOne(mappedBy = "fileInfo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private FileData fileData;
 
+    @Override
+    public FileInfo clone() {
+        try {
+            return (FileInfo) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

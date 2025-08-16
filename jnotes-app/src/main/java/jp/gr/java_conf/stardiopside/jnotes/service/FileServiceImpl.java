@@ -88,6 +88,8 @@ public class FileServiceImpl implements FileService {
     @Transactional
     public Optional<FileInfo> update(@Nullable MultipartFile file, FileInfo fileInfo, Integer fileDataVersion) {
         return fileInfoRepository.findById(fileInfo.getId()).map(info -> {
+            var newFileInfo = info.clone();
+
             if (file != null && StringUtils.isNotEmpty(file.getOriginalFilename())) {
                 byte[] data;
                 try {
@@ -96,22 +98,24 @@ public class FileServiceImpl implements FileService {
                     throw new UncheckedIOException(e);
                 }
 
-                info.setFileName(file.getOriginalFilename());
-                info.setContentType(file.getContentType());
-                info.setLength(data.length);
-                info.setHashValue(new DigestUtils(MessageDigestAlgorithms.SHA3_256).digestAsHex(data));
-
-                var fileData = info.getFileData();
-                fileData.setData(data);
-                fileData.setVersion(fileDataVersion);
+                newFileInfo.setFileName(file.getOriginalFilename());
+                newFileInfo.setContentType(file.getContentType());
+                newFileInfo.setLength(data.length);
+                newFileInfo.setHashValue(new DigestUtils(MessageDigestAlgorithms.SHA3_256).digestAsHex(data));
+                newFileInfo.setFileData(FileData.builder()
+                        .fileInfo(newFileInfo)
+                        .id(info.getFileData().getId())
+                        .data(data)
+                        .version(fileDataVersion)
+                        .build());
             }
 
             if (StringUtils.isNotEmpty(fileInfo.getFileName())) {
-                info.setFileName(fileInfo.getFileName());
+                newFileInfo.setFileName(fileInfo.getFileName());
             }
-            info.setVersion(fileInfo.getVersion());
+            newFileInfo.setVersion(fileInfo.getVersion());
 
-            return fileInfoRepository.save(info);
+            return fileInfoRepository.save(newFileInfo);
         });
     }
 

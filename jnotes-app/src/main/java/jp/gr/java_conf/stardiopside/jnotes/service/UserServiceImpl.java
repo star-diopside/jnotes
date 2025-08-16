@@ -22,6 +22,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -94,12 +95,15 @@ public class UserServiceImpl implements UserService {
         }
 
         return userRepository.findById(userData.id()).map(user -> {
-            user.setUsername(userData.username());
-            if (StringUtils.isNotEmpty(userData.rawPassword())) {
-                user.setPassword(passwordEncoder.encode(userData.rawPassword()));
-            }
-            user.setEnabled(userData.enabled());
-            user.setVersion(userData.version());
+            var newUser = new User();
+
+            newUser.setId(userData.id());
+            newUser.setUsername(userData.username());
+            newUser.setPassword(StringUtils.isEmpty(userData.rawPassword())
+                    ? user.getPassword()
+                    : passwordEncoder.encode(userData.rawPassword()));
+            newUser.setEnabled(userData.enabled());
+            newUser.setVersion(userData.version());
 
             List<String> roleNames = userData.roles().stream()
                     .map(role -> "ROLE_" + role).toList();
@@ -118,11 +122,12 @@ public class UserServiceImpl implements UserService {
                             .build())
                     .toList();
 
-            user.getAuthorities().removeAll(deleteAuthorities);
+            newUser.setAuthorities(Stream.concat(
+                            existsAuthorities.stream(),
+                            addAuthorities.stream())
+                    .toList());
             authorityRepository.deleteAll(deleteAuthorities);
-
-            user.getAuthorities().addAll(addAuthorities);
-            return userRepository.save(user);
+            return userRepository.save(newUser);
         });
     }
 
