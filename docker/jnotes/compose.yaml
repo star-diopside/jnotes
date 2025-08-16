@@ -13,3 +13,9 @@ services:
     image: "redis:alpine"
     ports:
       - "${REDIS_PORT}:6379"
+  nginx:
+    image: "nginx:alpine"
+    ports:
+      - "${NGINX_PORT}:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
