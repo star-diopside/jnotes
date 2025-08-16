@@ -3,51 +3,51 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}">
 <head>
-  <meta charset="utf-8" th:remove="all"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1" th:remove="all"/>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous" th:remove="all"/>
-  <link href="../../static/css/layout.css" rel="stylesheet" th:remove="all"/>
+  <meta charset="utf-8" th:remove="all" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" th:remove="all" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous" th:remove="all" />
+  <link href="../../static/css/layout.css" rel="stylesheet" th:remove="all" />
   <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">ユーザ詳細</title>
 </head>
 <body>
-<div class="container">
-  <div layout:fragment="content">
-    <h1 class="pb-2 mt-4 mb-2 border-bottom">ユーザ詳細</h1>
-    <div th:if="${success}" th:text="${success}" class="alert alert-success" role="alert">メッセージ</div>
-    <div class="row mb-3">
-      <label for="username" class="col-form-label col-sm-2">ユーザ名</label>
-      <div class="col-sm-10">
-        <input th:value="${user.username}" type="text" readonly class="form-control-plaintext" id="username"/>
+  <div class="container">
+    <div layout:fragment="content">
+      <h1 class="pb-2 mt-4 mb-2 border-bottom">ユーザ詳細</h1>
+      <div th:if="${success}" th:text="${success}" class="alert alert-success" role="alert">メッセージ</div>
+      <div class="row mb-3">
+        <label for="username" class="col-form-label col-sm-2">ユーザ名</label>
+        <div class="col-sm-10">
+          <input th:value="${user.username}" type="text" readonly class="form-control-plaintext" id="username" />
+        </div>
       </div>
-    </div>
-    <div class="row mb-3">
-      <label for="enabled" class="col-form-label col-sm-2 pt-0">有効</label>
-      <div class="col-sm-10">
-        <input th:checked="${user.enabled}" type="checkbox" disabled class="form-check-input" id="enabled"/>
+      <div class="row mb-3">
+        <label for="enabled" class="col-form-label col-sm-2 pt-0">有効</label>
+        <div class="col-sm-10">
+          <input th:checked="${user.enabled}" type="checkbox" disabled class="form-check-input" id="enabled" />
+        </div>
       </div>
-    </div>
-    <div class="row mb-3">
-      <label for="createdAt" class="col-form-label col-sm-2">作成日時</label>
-      <div class="col-sm-10">
-        <input th:value="${#temporals.format(user.createdAt, 'yyyy/MM/dd HH:mm:ss')}" type="text" readonly class="form-control-plaintext" id="createdAt"/>
+      <div class="row mb-3">
+        <label for="createdAt" class="col-form-label col-sm-2">作成日時</label>
+        <div class="col-sm-10">
+          <input th:value="${#temporals.format(user.createdAt, 'yyyy/MM/dd HH:mm:ss')}" type="text" readonly class="form-control-plaintext" id="createdAt" />
+        </div>
       </div>
-    </div>
-    <div class="row mb-3">
-      <label for="updatedAt" class="col-form-label col-sm-2">更新日時</label>
-      <div class="col-sm-10">
-        <input th:value="${#temporals.format(user.updatedAt, 'yyyy/MM/dd HH:mm:ss')}" type="text" readonly class="form-control-plaintext" id="updatedAt"/>
+      <div class="row mb-3">
+        <label for="updatedAt" class="col-form-label col-sm-2">更新日時</label>
+        <div class="col-sm-10">
+          <input th:value="${#temporals.format(user.updatedAt, 'yyyy/MM/dd HH:mm:ss')}" type="text" readonly class="form-control-plaintext" id="updatedAt" />
+        </div>
       </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-sm-12">
-        <div class="float-end">
-          <a th:href="@{/users}" class="btn btn-secondary" href="index.html" role="button">一覧</a>
-          <a th:href="@{/users/{id}/edit(id=${user.id})}" class="btn btn-secondary" href="edit.html" role="button">編集</a>
+      <div class="row mb-3">
+        <div class="col-sm-12">
+          <div class="float-end">
+            <a th:href="@{/users}" class="btn btn-secondary" href="index.html" role="button">一覧</a>
+            <a th:href="@{/users/{id}/edit(id=${user.id})}" class="btn btn-secondary" href="edit.html" role="button">編集</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 </body>
 </html>

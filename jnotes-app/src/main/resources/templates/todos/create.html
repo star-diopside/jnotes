@@ -3,31 +3,31 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}">
 <head>
-  <meta charset="utf-8" th:remove="all"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1" th:remove="all"/>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous" th:remove="all"/>
-  <link href="../../static/css/layout.css" rel="stylesheet" th:remove="all"/>
+  <meta charset="utf-8" th:remove="all" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" th:remove="all" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous" th:remove="all" />
+  <link href="../../static/css/layout.css" rel="stylesheet" th:remove="all" />
   <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">TODO登録</title>
 </head>
 <body>
-<div class="container">
-  <div layout:fragment="content">
-    <h1 class="pb-2 mt-4 mb-2 border-bottom">TODO登録</h1>
-    <form th:action="@{/todos}" th:method="post" th:object="${todo}" action="show.html" role="form">
-      <div th:errors="*{global}" class="alert alert-danger" role="alert">エラーメッセージ</div>
-      <div th:replace="~{todos/_form :: content}">
-        入力エリア
-      </div>
-      <div class="row mb-3">
-        <div class="col-sm-12">
-          <div class="float-end">
-            <input type="submit" value="登録" class="btn btn-primary"/>
+  <div class="container">
+    <div layout:fragment="content">
+      <h1 class="pb-2 mt-4 mb-2 border-bottom">TODO登録</h1>
+      <form th:action="@{/todos}" th:method="post" th:object="${todo}" action="show.html" role="form">
+        <div th:errors="*{global}" class="alert alert-danger" role="alert">エラーメッセージ</div>
+        <div th:replace="~{todos/_form :: content}">
+          入力エリア
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <div class="float-end">
+              <input type="submit" value="登録" class="btn btn-primary" />
+            </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 </body>
 </html>
