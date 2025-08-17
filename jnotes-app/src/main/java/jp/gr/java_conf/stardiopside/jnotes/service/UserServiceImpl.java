@@ -84,13 +84,17 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(new ResultMessage("messages.error-alreadyExistsUser"));
         }
 
-        if (!userData.enabled()) {
-            var authentication = SecurityContextHolder.getContext().getAuthentication();
-            var authUser = userRepository.findByUsername(authentication.getName())
-                    .orElseThrow(ResourceNotFoundException::new);
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        var authUser = userRepository.findByUsername(authentication.getName())
+                .orElseThrow(ResourceNotFoundException::new);
 
-            if (Objects.equals(authUser.getId(), userData.id())) {
+        if (Objects.equals(authUser.getId(), userData.id())) {
+            if (!userData.enabled()) {
                 throw new BusinessException(new ResultMessage("messages.error-disableCurrentUser"));
+            }
+
+            if (!userData.roles().contains("ADMIN")) {
+                throw new BusinessException(new ResultMessage("messages.error-disableAdminCurrentUser"));
             }
         }
 
