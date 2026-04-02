@@ -9,7 +9,9 @@ spring:
       port: 6379
 
 logging:
+  file:
+    name: ${user.home}/logs/jnotes/app.log
   level:
     web: DEBUG
     sql: DEBUG
-    "jp.gr.java_conf.stardiopside.jnotes": DEBUG
+    "[jp.gr.java_conf.stardiopside.jnotes]": DEBUG
