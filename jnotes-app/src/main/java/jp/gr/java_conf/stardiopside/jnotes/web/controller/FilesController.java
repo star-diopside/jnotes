@@ -59,12 +59,20 @@ public class FilesController {
                 .orElseGet(() -> new ModelAndView("errors/404", HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping(value = "/{id}/data", params = "inline")
+    public ResponseEntity<? extends Resource> downloadInline(@PathVariable Long id) {
+        return download(id, ContentDisposition.inline());
+    }
+
     @GetMapping("/{id}/data")
-    public ResponseEntity<? extends Resource> download(@PathVariable Long id) {
+    public ResponseEntity<? extends Resource> downloadAttachment(@PathVariable Long id) {
+        return download(id, ContentDisposition.attachment());
+    }
+
+    private ResponseEntity<? extends Resource> download(Long id, ContentDisposition.Builder builder) {
         return fileService.findDownloadData(id)
                 .map(downloadData -> ResponseEntity.ok()
-                        .headers(headers -> headers.setContentDisposition(ContentDisposition
-                                .attachment()
+                        .headers(headers -> headers.setContentDisposition(builder
                                 .filename(downloadData.fileName(), StandardCharsets.UTF_8)
                                 .build()))
                         .contentType(parseMediaType(downloadData.contentType()))
