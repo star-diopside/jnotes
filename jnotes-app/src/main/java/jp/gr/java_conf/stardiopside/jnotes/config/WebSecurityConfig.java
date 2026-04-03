@@ -21,6 +21,12 @@ public class WebSecurityConfig {
                         .requestMatchers("/users/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
+                .headers(headers -> headers
+                        .contentSecurityPolicy(csp -> csp
+                                .policyDirectives("default-src 'self';" +
+                                        " frame-ancestors 'none';" +
+                                        " require-trusted-types-for 'script';" +
+                                        " trusted-types;")))
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .build();

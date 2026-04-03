@@ -25,6 +25,9 @@ subprojects {
         imports {
             mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
         }
+        dependencies {
+            dependency("org.webjars:bootstrap:5.3.8")
+        }
     }
 
     dependencies {

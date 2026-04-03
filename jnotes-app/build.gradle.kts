@@ -19,6 +19,8 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("org.springframework.boot:spring-boot-starter-flyway")
     runtimeOnly("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
+    runtimeOnly("org.webjars:bootstrap")
+    runtimeOnly("org.webjars:webjars-locator-lite")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("org.springframework.boot:spring-boot-starter-flyway-test")
