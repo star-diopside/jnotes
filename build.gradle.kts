@@ -26,6 +26,7 @@ subprojects {
             mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
         }
         dependencies {
+            dependency("org.webjars.npm:bootstrap-icons:1.13.1")
             dependency("org.webjars:bootstrap:5.3.8")
         }
     }

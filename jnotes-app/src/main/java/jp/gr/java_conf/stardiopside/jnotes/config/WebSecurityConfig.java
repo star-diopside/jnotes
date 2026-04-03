@@ -26,7 +26,9 @@ public class WebSecurityConfig {
                                 .policyDirectives("default-src 'self';" +
                                         " frame-ancestors 'none';" +
                                         " require-trusted-types-for 'script';" +
-                                        " trusted-types;")))
+                                        " trusted-types;")
+                        )
+                )
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .build();
