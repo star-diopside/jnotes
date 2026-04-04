@@ -26,19 +26,22 @@
             <span class="form-control-plaintext">
               <a th:href="@{/files/{id}/data(id=*{id})}" th:text="*{fileName}" id="fileName" target="_blank" href="javascript:void(0);">xxxx.txt</a>
               <a th:href="@{/files/{id}/data(id=*{id},download)}" class="ms-2" href="javascript:void(0);"><img th:src="@{/webjars/bootstrap-icons/icons/download.svg}" alt="download" /></a>
+              <input th:field="*{fileName}" type="hidden" />
             </span>
           </div>
         </div>
         <div class="row mb-3">
           <label for="updateFileName" class="col-form-label col-sm-2">ファイル名を変更</label>
           <div class="col-sm-10">
-            <input th:field="*{updateFileName}" type="text" class="form-control" id="updateFileName" />
+            <input th:field="*{updateFileName}" th:class="${#fields.hasErrors('updateFileName')}? 'form-control is-invalid' : 'form-control'" type="text" class="form-control" id="updateFileName" />
+            <div th:errors="*{updateFileName}" class="invalid-feedback">エラーメッセージ</div>
           </div>
         </div>
         <div class="row mb-3">
           <label for="contentType" class="col-form-label col-sm-2">コンテンツタイプ</label>
           <div class="col-sm-10">
-            <input th:field="*{contentType}" type="text" readonly class="form-control-plaintext" id="contentType" value="xxxx" />
+            <input th:field="*{contentType}" th:class="${#fields.hasErrors('contentType')}? 'form-control is-invalid' : 'form-control'" type="text" class="form-control" id="contentType" value="xxxx" />
+            <div th:errors="*{contentType}" class="invalid-feedback">エラーメッセージ</div>
           </div>
         </div>
         <div class="row mb-3">

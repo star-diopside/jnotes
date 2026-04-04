@@ -42,6 +42,8 @@ public class FileInfo implements Cloneable {
 
     private @Nullable String contentType;
 
+    private @Nullable String originalContentType;
+
     private Integer length;
 
     private String hashValue;

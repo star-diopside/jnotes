@@ -71,6 +71,7 @@ public class FileServiceImpl implements FileService {
         var fileInfo = FileInfo.builder()
                 .fileName(Objects.requireNonNull(file.getOriginalFilename()))
                 .contentType(file.getContentType())
+                .originalContentType(file.getContentType())
                 .length(data.length)
                 .hashValue(new DigestUtils(MessageDigestAlgorithms.SHA3_256).digestAsHex(data))
                 .build();
@@ -113,6 +114,9 @@ public class FileServiceImpl implements FileService {
             if (StringUtils.isNotEmpty(fileInfo.getFileName())) {
                 newFileInfo.setFileName(fileInfo.getFileName());
             }
+            newFileInfo.setContentType(fileInfo.getContentType() == null
+                    ? info.getOriginalContentType()
+                    : fileInfo.getContentType());
             newFileInfo.setVersion(fileInfo.getVersion());
 
             return fileInfoRepository.save(newFileInfo);
