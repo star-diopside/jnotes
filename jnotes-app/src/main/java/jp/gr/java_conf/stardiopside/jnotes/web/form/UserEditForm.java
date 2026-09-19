@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jp.gr.java_conf.stardiopside.jnotes.data.entity.User;
 import jp.gr.java_conf.stardiopside.jnotes.value.UserData;
+import jp.gr.java_conf.stardiopside.jnotes.web.validation.constraints.PropertyValuesMatch;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -19,6 +20,7 @@ import java.util.regex.Pattern;
 @Data
 @NoArgsConstructor
 @ToString(exclude = {"password", "confirmPassword"})
+@PropertyValuesMatch(propertyNames = {"password", "confirmPassword"}, message = "{validation.unmatchPassword}")
 public class UserEditForm implements Serializable {
 
     @NotBlank

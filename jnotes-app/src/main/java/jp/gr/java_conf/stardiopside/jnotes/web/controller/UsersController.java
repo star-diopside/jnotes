@@ -7,16 +7,13 @@ import jp.gr.java_conf.stardiopside.jnotes.service.UserService;
 import jp.gr.java_conf.stardiopside.jnotes.web.form.UserCreateForm;
 import jp.gr.java_conf.stardiopside.jnotes.web.form.UserEditForm;
 import jp.gr.java_conf.stardiopside.jnotes.web.form.UserRole;
-import jp.gr.java_conf.stardiopside.jnotes.web.validation.PasswordMatchValidator;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,14 +31,11 @@ import java.util.Locale;
 public class UsersController {
 
     private final UserService userService;
-    private final PasswordMatchValidator passwordMatchValidator;
     private final MessageSourceAccessor messages;
 
     public UsersController(UserService userService,
-                           PasswordMatchValidator passwordMatchValidator,
                            MessageSource messageSource) {
         this.userService = userService;
-        this.passwordMatchValidator = passwordMatchValidator;
         this.messages = new MessageSourceAccessor(messageSource);
     }
 
@@ -51,11 +45,6 @@ public class UsersController {
         form.setEnabled(true);
         form.setRoles(new ArrayList<>(List.of(UserRole.USER)));
         return form;
-    }
-
-    @InitBinder({"createForm", "editForm"})
-    public void initBinder(WebDataBinder binder) {
-        binder.addValidators(passwordMatchValidator);
     }
 
     @GetMapping
