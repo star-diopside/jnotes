@@ -1,8 +1,8 @@
 plugins {
     java
     checkstyle
-    id("com.github.spotbugs") version "6.4.8"
-    id("org.springframework.boot") version "4.0.5" apply false
+    id("com.github.spotbugs") version "6.5.11"
+    id("org.springframework.boot") version "4.1.1" apply false
     id("io.spring.dependency-management") version "1.1.7"
 }
 
@@ -15,7 +15,7 @@ subprojects {
     group = "jp.gr.java_conf.stardiopside"
     version = "0.0.1-SNAPSHOT"
 
-    extra["groovy.version"] = "5.0.5"
+    extra["lombok.version"] = "1.18.48"
 
     repositories {
         mavenCentral()
@@ -39,12 +39,12 @@ subprojects {
     }
 
     checkstyle {
-        toolVersion = "13.4.0"
+        toolVersion = "14.1.0"
         isIgnoreFailures = true
     }
 
     spotbugs {
-        toolVersion = "4.9.8"
+        toolVersion = "4.10.4"
         ignoreFailures = true
     }
 

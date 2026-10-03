@@ -9,12 +9,12 @@ services:
       POSTGRES_DB: "${POSTGRES_DB}"
     volumes:
       - ./postgres/initdb/${POSTGRES_PROFILE}:/docker-entrypoint-initdb.d:ro
-  redis:
-    image: "redis:alpine"
+  valkey:
+    image: "valkey/valkey:latest"
     ports:
-      - "${REDIS_PORT}:6379"
+      - "${VALKEY_PORT}:6379"
   nginx:
-    image: "nginx:alpine"
+    image: "nginx:latest"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
