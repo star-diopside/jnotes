@@ -1,5 +1,5 @@
 plugins {
-    java
+    `java-library`
     checkstyle
     id("com.github.spotbugs") version "6.5.13"
     id("org.springframework.boot") version "4.1.2" apply false
@@ -7,7 +7,7 @@ plugins {
 }
 
 subprojects {
-    apply(plugin = "java")
+    apply(plugin = "java-library")
     apply(plugin = "checkstyle")
     apply(plugin = "com.github.spotbugs")
     apply(plugin = "io.spring.dependency-management")
