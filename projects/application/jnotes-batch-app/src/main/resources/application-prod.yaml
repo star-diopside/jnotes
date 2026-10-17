@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/jnotesdb
+    username: jnotes
+    password: jnotes
+
+logging:
+  file:
+    name: ${user.home}/logs/jnotes/batch-app.log

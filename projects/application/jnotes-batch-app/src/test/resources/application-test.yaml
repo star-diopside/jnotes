@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test_jnotesdb
+    username: jnotes
+    password: jnotes
+
+  batch:
+    job:
+      enabled: false
