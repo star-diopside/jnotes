@@ -1,0 +1,12 @@
+spring:
+  threads:
+    virtual:
+      enabled: true
+
+application:
+  batch:
+    import-postal-code-job:
+      postcode:
+        resource: https://www.post.japanpost.jp/service/search/zipcode/download/utf/zip/utf_ken_all.zip
+      temp-dir:
+        prefix: postcode
