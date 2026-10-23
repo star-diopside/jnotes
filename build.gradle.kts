@@ -1,8 +1,8 @@
 plugins {
     java
     checkstyle
-    id("com.github.spotbugs") version "6.4.8"
-    id("org.springframework.boot") version "4.0.5" apply false
+    id("com.github.spotbugs") version "6.5.13"
+    id("org.springframework.boot") version "4.1.2" apply false
     id("io.spring.dependency-management") version "1.1.7"
 }
 
@@ -15,8 +15,6 @@ subprojects {
     group = "jp.gr.java_conf.stardiopside"
     version = "0.0.1-SNAPSHOT"
 
-    extra["groovy.version"] = "5.0.5"
-
     repositories {
         mavenCentral()
     }
@@ -26,7 +24,7 @@ subprojects {
             mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
         }
         dependencies {
-            dependency("org.webjars.npm:bootstrap-icons:1.13.1")
+            dependency("org.webjars.npm:bootstrap-icons:1.13.2")
             dependency("org.webjars:bootstrap:5.3.8")
         }
     }
@@ -39,12 +37,12 @@ subprojects {
     }
 
     checkstyle {
-        toolVersion = "13.4.0"
+        toolVersion = "14.3.0"
         isIgnoreFailures = true
     }
 
     spotbugs {
-        toolVersion = "4.9.8"
+        toolVersion = "4.10.5"
         ignoreFailures = true
     }
 
