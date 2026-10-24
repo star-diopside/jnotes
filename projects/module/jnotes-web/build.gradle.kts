@@ -1,3 +1,7 @@
+plugins {
+    id("java-common-conventions")
+}
+
 dependencies {
     implementation(project(":projects:module:jnotes-core"))
     implementation(project(":projects:module:jnotes-data"))

@@ -1,3 +1,7 @@
+plugins {
+    id("java-common-conventions")
+}
+
 dependencies {
     implementation("org.jspecify:jspecify")
     implementation("org.springframework:spring-context")
