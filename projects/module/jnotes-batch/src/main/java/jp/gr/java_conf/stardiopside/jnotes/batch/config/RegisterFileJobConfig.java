@@ -1,9 +1,9 @@
 package jp.gr.java_conf.stardiopside.jnotes.batch.config;
 
-import jakarta.persistence.EntityManagerFactory;
+import jp.gr.java_conf.stardiopside.jnotes.batch.item.DirectoryFileItemReader;
 import jp.gr.java_conf.stardiopside.jnotes.batch.item.RegisterFileItemConverter;
-import jp.gr.java_conf.stardiopside.jnotes.batch.item.RegisterFileItemReader;
 import jp.gr.java_conf.stardiopside.jnotes.data.entity.FileInfo;
+import jp.gr.java_conf.stardiopside.jnotes.data.repository.FileInfoRepository;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.Job;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -13,8 +13,8 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.infrastructure.item.ItemWriter;
-import org.springframework.batch.infrastructure.item.database.JpaItemWriter;
-import org.springframework.batch.infrastructure.item.database.builder.JpaItemWriterBuilder;
+import org.springframework.batch.infrastructure.item.data.RepositoryItemWriter;
+import org.springframework.batch.infrastructure.item.data.builder.RepositoryItemWriterBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,10 +29,9 @@ public class RegisterFileJobConfig {
     public Job registerFileJob(JobRepository jobRepository,
                                JobParametersValidator registerFileJobParametersValidator,
                                Step registerFileStep) {
-        return new JobBuilder("registerFileJob", jobRepository)
+        return new JobBuilder(jobRepository)
                 .validator(registerFileJobParametersValidator)
                 .start(registerFileStep)
-                .preventRestart()
                 .build();
     }
 
@@ -46,10 +45,10 @@ public class RegisterFileJobConfig {
     @Bean
     public Step registerFileStep(JobRepository jobRepository,
                                  PlatformTransactionManager transactionManager,
-                                 RegisterFileItemReader registerFileItemReader,
+                                 DirectoryFileItemReader registerFileItemReader,
                                  RegisterFileItemConverter registerFileItemConverter,
                                  ItemWriter<FileInfo> registerFileItemWriter) {
-        return new StepBuilder("registerFileStep", jobRepository)
+        return new StepBuilder(jobRepository)
                 .<Path, FileInfo>chunk(10)
                 .transactionManager(transactionManager)
                 .reader(registerFileItemReader)
@@ -60,9 +59,9 @@ public class RegisterFileJobConfig {
 
     @Bean
     @StepScope
-    public RegisterFileItemReader registerFileItemReader(
+    public DirectoryFileItemReader registerFileItemReader(
             @Value("#{jobParameters['path']}") Path path) {
-        return new RegisterFileItemReader(path);
+        return new DirectoryFileItemReader(path);
     }
 
     @Bean
@@ -71,10 +70,9 @@ public class RegisterFileJobConfig {
     }
 
     @Bean
-    public JpaItemWriter<FileInfo> registerFileItemWriter(EntityManagerFactory entityManagerFactory) {
-        return new JpaItemWriterBuilder<FileInfo>()
-                .entityManagerFactory(entityManagerFactory)
-                .usePersist(true)
+    public RepositoryItemWriter<FileInfo> registerFileItemWriter(FileInfoRepository fileInfoRepository) {
+        return new RepositoryItemWriterBuilder<FileInfo>()
+                .repository(fileInfoRepository)
                 .build();
     }
 }

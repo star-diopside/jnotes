@@ -7,7 +7,7 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     implementation(project(":projects:module:jnotes-batch"))
     implementation("org.jspecify:jspecify")
-    implementation("org.springframework.boot:spring-boot-starter-batch")
+    implementation("org.springframework.boot:spring-boot-starter-batch-jdbc")
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("org.springframework.boot:spring-boot-starter-flyway")

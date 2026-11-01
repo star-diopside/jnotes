@@ -45,7 +45,7 @@ public class ImportPostalCodeJobConfig {
                                    Step unarchiveStep,
                                    Step clearDataStep,
                                    Step importStep) {
-        return new JobBuilder("importPostalCodeJob", jobRepository)
+        return new JobBuilder(jobRepository)
                 .listener(temporaryDirectoryJobListener)
                 .start(unarchiveStep)
                 .next(clearDataStep)
@@ -65,7 +65,7 @@ public class ImportPostalCodeJobConfig {
     @Bean
     public Step unarchiveStep(JobRepository jobRepository,
                               UnarchiveZipFileTasklet unarchiveZipFileTasklet) {
-        return new StepBuilder("unarchiveStep", jobRepository)
+        return new StepBuilder(jobRepository)
                 .tasklet(unarchiveZipFileTasklet)
                 .build();
     }
@@ -85,7 +85,7 @@ public class ImportPostalCodeJobConfig {
     public Step clearDataStep(JobRepository jobRepository,
                               PlatformTransactionManager transactionManager,
                               ClearPostalCodeTasklet clearDataTasklet) {
-        return new StepBuilder("clearDataStep", jobRepository)
+        return new StepBuilder(jobRepository)
                 .tasklet(clearDataTasklet, transactionManager)
                 .build();
     }
@@ -105,7 +105,7 @@ public class ImportPostalCodeJobConfig {
                            MultiResourceItemReader<PostalCodeAddress> multiPostalCodeAddressReader,
                            ItemProcessor<PostalCodeAddress, PostalCode> postalCodeProcessor,
                            ItemWriter<PostalCode> postalCodeWriter) {
-        return new StepBuilder("importStep", jobRepository)
+        return new StepBuilder(jobRepository)
                 .<PostalCodeAddress, PostalCode>chunk(100)
                 .transactionManager(transactionManager)
                 .reader(multiPostalCodeAddressReader)
