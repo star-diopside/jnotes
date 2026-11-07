@@ -33,7 +33,7 @@ public class DirectoryFileItemReader extends ItemStreamSupport implements ItemSt
         }
 
         try {
-            pathStream = Files.find(basePath, Integer.MAX_VALUE, (_, attr) -> attr.isRegularFile());
+            pathStream = findFiles(basePath);
         } catch (IOException e) {
             throw new ItemStreamException(e);
         }
@@ -44,6 +44,11 @@ public class DirectoryFileItemReader extends ItemStreamSupport implements ItemSt
         }
 
         pathIterator = pathStream.iterator();
+    }
+
+    @SuppressWarnings("StreamResourceLeak")
+    private static Stream<Path> findFiles(Path basePath) throws IOException {
+        return Files.find(basePath, Integer.MAX_VALUE, (_, attr) -> attr.isRegularFile());
     }
 
     @Override

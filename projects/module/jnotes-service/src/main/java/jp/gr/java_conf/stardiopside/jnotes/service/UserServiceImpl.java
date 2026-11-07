@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(new ResultMessage("messages.error-alreadyExistsUser"));
         }
 
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        var authentication = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication());
         var authUser = userRepository.findByUsername(authentication.getName())
                 .orElseThrow(ResourceNotFoundException::new);
 
@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void delete(User user) {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        var authentication = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication());
         var authUser = userRepository.findByUsername(authentication.getName())
                 .orElseThrow(ResourceNotFoundException::new);
 

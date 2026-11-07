@@ -23,26 +23,29 @@ import java.util.regex.Pattern;
 @PropertyValuesMatch(propertyNames = {"password", "confirmPassword"}, message = "{validation.unmatchPassword}")
 public class UserEditForm implements Serializable {
 
+    @NotNull
     @NotBlank
-    private String username;
+    private @Nullable String username;
 
     @Size(min = 8)
-    private String password;
+    private @Nullable String password;
 
-    private String confirmPassword;
-
-    @NotNull
-    private Boolean enabled;
+    private @Nullable String confirmPassword;
 
     @NotNull
-    private List<UserRole> roles;
+    private @Nullable Boolean enabled;
 
-    private Long id;
+    @NotNull
+    private @Nullable List<UserRole> roles;
 
-    private LocalDateTime createdAt;
+    @NotNull
+    private @Nullable Long id;
 
-    private LocalDateTime updatedAt;
+    private @Nullable LocalDateTime createdAt;
 
+    private @Nullable LocalDateTime updatedAt;
+
+    @NotNull
     private @Nullable Integer version;
 
     public UserEditForm(User user) {
@@ -61,11 +64,11 @@ public class UserEditForm implements Serializable {
 
     public UserData toUserData() {
         return new UserData(
-                id,
-                username,
+                Objects.requireNonNull(id),
+                Objects.requireNonNull(username),
                 password,
-                enabled,
+                Objects.requireNonNull(enabled),
                 Objects.requireNonNull(version),
-                roles.stream().map(Enum::name).toList());
+                Objects.requireNonNull(roles).stream().map(Enum::name).toList());
     }
 }

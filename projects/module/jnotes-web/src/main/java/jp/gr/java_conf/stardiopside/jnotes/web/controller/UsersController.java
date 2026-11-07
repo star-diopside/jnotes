@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/users")
@@ -75,8 +76,9 @@ public class UsersController {
         }
 
         try {
-            var user = userService.create(form.getUsername(), form.getPassword(), form.getEnabled(),
-                    form.getRoles().stream().map(Enum::name).toArray(String[]::new));
+            var user = userService.create(Objects.requireNonNull(form.getUsername()),
+                    Objects.requireNonNull(form.getPassword()), Objects.requireNonNull(form.getEnabled()),
+                    Objects.requireNonNull(form.getRoles()).stream().map(Enum::name).toArray(String[]::new));
             redirectAttributes.addFlashAttribute("success",
                     messages.getMessage("messages.success-create", locale));
             return new ModelAndView("redirect:/users/{id}")
@@ -94,7 +96,7 @@ public class UsersController {
         if (form.getVersion() != null) {
             return new ModelAndView("users/edit");
         }
-        return userService.find(form.getId())
+        return userService.find(Objects.requireNonNull(form.getId()))
                 .map(user -> new ModelAndView("users/edit")
                         .addObject("editForm", new UserEditForm(user)))
                 .orElseGet(() -> new ModelAndView("errors/404", HttpStatus.NOT_FOUND));

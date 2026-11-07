@@ -5,6 +5,7 @@ import jp.gr.java_conf.stardiopside.jnotes.value.DownloadData;
 import jp.gr.java_conf.stardiopside.jnotes.value.FileInfoData;
 import jp.gr.java_conf.stardiopside.jnotes.value.FileInfoOnly;
 import org.jspecify.annotations.Nullable;
+import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -22,7 +23,9 @@ public interface FileService {
 
     FileInfo save(MultipartFile file);
 
-    Optional<FileInfo> update(@Nullable MultipartFile file, FileInfo fileInfo, Integer fileDataVersion);
+    Optional<FileInfo> update(@Nullable MultipartFile file, Long id, @Nullable String updateFileName,
+                              @Nullable MediaType contentType, Integer fileInfoVersion,
+                              Integer fileDataVersion);
 
     void delete(FileInfo fileInfo);
 

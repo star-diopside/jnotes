@@ -31,6 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/files")
@@ -73,10 +74,10 @@ public class FilesController {
         return fileService.findDownloadData(id)
                 .map(downloadData -> ResponseEntity.ok()
                         .headers(headers -> headers.setContentDisposition(builder
-                                .filename(downloadData.fileName(), StandardCharsets.UTF_8)
+                                .filename(downloadData.getFileName(), StandardCharsets.UTF_8)
                                 .build()))
-                        .contentType(parseMediaType(downloadData.contentType()))
-                        .body(new ByteArrayResource(downloadData.data())))
+                        .contentType(parseMediaType(downloadData.getContentType()))
+                        .body(new ByteArrayResource(downloadData.getData())))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -93,7 +94,7 @@ public class FilesController {
             return new ModelAndView("files/create");
         }
 
-        var fileInfo = fileService.save(form.getFile());
+        var fileInfo = fileService.save(Objects.requireNonNull(form.getFile()));
         redirectAttributes.addFlashAttribute("success",
                 messages.getMessage("messages.success-create", locale));
         return new ModelAndView("redirect:/files/{id}")
@@ -115,7 +116,9 @@ public class FilesController {
             return new ModelAndView("files/edit");
         }
 
-        return fileService.update(form.getFile(), form.toFileInfo(), form.getFileDataVersion())
+        return fileService.update(form.getFile(), Objects.requireNonNull(form.getId()), form.getUpdateFileName(),
+                        form.getContentType(), Objects.requireNonNull(form.getFileInfoVersion()),
+                        Objects.requireNonNull(form.getFileDataVersion()))
                 .map(fileInfo -> {
                     redirectAttributes.addFlashAttribute("success",
                             messages.getMessage("messages.success-update", locale));

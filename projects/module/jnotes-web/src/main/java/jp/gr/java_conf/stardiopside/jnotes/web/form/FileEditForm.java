@@ -1,7 +1,7 @@
 package jp.gr.java_conf.stardiopside.jnotes.web.form;
 
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import jp.gr.java_conf.stardiopside.jnotes.data.entity.FileInfo;
 import jp.gr.java_conf.stardiopside.jnotes.value.FileInfoData;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,28 +19,31 @@ public class FileEditForm {
 
     private @Nullable MultipartFile file;
 
-    private Long id;
+    @NotNull
+    private @Nullable Long id;
 
-    private String fileName;
+    private @Nullable String fileName;
 
     @Size(max = 255)
-    private String updateFileName;
+    private @Nullable String updateFileName;
 
     private @Nullable MediaType contentType;
 
-    private Integer length;
+    private @Nullable Integer length;
 
-    private String hashValue;
-
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime createdAt;
+    private @Nullable String hashValue;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime updatedAt;
+    private @Nullable LocalDateTime createdAt;
 
-    private Integer fileInfoVersion;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private @Nullable LocalDateTime updatedAt;
 
-    private Integer fileDataVersion;
+    @NotNull
+    private @Nullable Integer fileInfoVersion;
+
+    @NotNull
+    private @Nullable Integer fileDataVersion;
 
     public FileEditForm(Long id) {
         this.id = id;
@@ -56,18 +59,5 @@ public class FileEditForm {
         updatedAt = ObjectUtils.max(file.updatedAt(), file.fileDataUpdatedAt());
         fileInfoVersion = file.version();
         fileDataVersion = file.fileDataVersion();
-    }
-
-    public FileInfo toFileInfo() {
-        return FileInfo.builder()
-                .id(id)
-                .fileName(updateFileName)
-                .contentType(contentType == null ? null : contentType.toString())
-                .length(length)
-                .hashValue(hashValue)
-                .createdAt(createdAt)
-                .updatedAt(updatedAt)
-                .version(fileInfoVersion)
-                .build();
     }
 }

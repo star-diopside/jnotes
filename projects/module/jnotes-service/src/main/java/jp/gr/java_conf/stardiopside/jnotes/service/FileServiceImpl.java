@@ -11,6 +11,7 @@ import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -87,8 +88,10 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional
-    public Optional<FileInfo> update(@Nullable MultipartFile file, FileInfo fileInfo, Integer fileDataVersion) {
-        return fileInfoRepository.findById(fileInfo.getId()).map(info -> {
+    public Optional<FileInfo> update(@Nullable MultipartFile file, Long id, @Nullable String updateFileName,
+                                     @Nullable MediaType contentType, Integer fileInfoVersion,
+                                     Integer fileDataVersion) {
+        return fileInfoRepository.findById(id).map(info -> {
             var newFileInfo = info.clone();
 
             if (file != null && StringUtils.isNotEmpty(file.getOriginalFilename())) {
@@ -111,13 +114,13 @@ public class FileServiceImpl implements FileService {
                         .build());
             }
 
-            if (StringUtils.isNotEmpty(fileInfo.getFileName())) {
-                newFileInfo.setFileName(fileInfo.getFileName());
+            if (StringUtils.isNotEmpty(updateFileName)) {
+                newFileInfo.setFileName(updateFileName);
             }
-            newFileInfo.setContentType(fileInfo.getContentType() == null
+            newFileInfo.setContentType(contentType == null
                     ? info.getOriginalContentType()
-                    : fileInfo.getContentType());
-            newFileInfo.setVersion(fileInfo.getVersion());
+                    : contentType.toString());
+            newFileInfo.setVersion(fileInfoVersion);
 
             return fileInfoRepository.save(newFileInfo);
         });
