@@ -14,7 +14,7 @@
     <div layout:fragment="content">
       <h1 class="pb-2 mt-4 mb-2 border-bottom">ユーザ編集</h1>
       <div th:if="${error}" th:text="${error}" class="alert alert-danger" role="alert">エラーメッセージ</div>
-      <form th:action="@{/users/{id}(id=*{id})}" th:method="put" th:object="${editForm}" action="show.html" role="form" onsubmit="return check()">
+      <form id="main" th:action="@{/users/{id}(id=*{id})}" th:method="put" th:object="${editForm}" action="show.html" role="form">
         <div th:errors="*{global}" class="alert alert-danger" role="alert">エラーメッセージ</div>
         <div th:replace="~{users/_form :: content}">
           入力エリア
@@ -42,7 +42,7 @@
           </div>
         </div>
       </form>
-      <script src="../../static/js/users/edit.js" th:src="@{/js/users/edit.js}"></script>
+      <script src="../../static/js/users/edit.js" th:src="@{/js/users/edit.js}" defer></script>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>

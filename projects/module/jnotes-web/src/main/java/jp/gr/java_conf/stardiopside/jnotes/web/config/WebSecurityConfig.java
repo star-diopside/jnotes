@@ -24,6 +24,7 @@ public class WebSecurityConfig {
                 .headers(headers -> headers
                         .contentSecurityPolicy(csp -> csp
                                 .policyDirectives("default-src 'self';" +
+                                        " img-src 'self' data:;" +
                                         " frame-ancestors 'none';" +
                                         " require-trusted-types-for 'script';" +
                                         " trusted-types;")
