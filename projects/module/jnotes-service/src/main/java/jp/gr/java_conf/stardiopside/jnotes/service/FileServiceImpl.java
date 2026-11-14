@@ -18,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -50,7 +52,16 @@ public class FileServiceImpl implements FileService {
                 .map(fileInfo -> new DownloadData(
                         fileInfo.getFileName(),
                         fileInfo.getContentType(),
-                        fileInfo.getFileData().getData()));
+                        createDataTempFile(fileInfo)));
+    }
+
+    private static Path createDataTempFile(FileInfo fileInfo) {
+        try {
+            Path dataFile = Files.createTempFile(null, null);
+            return Files.write(dataFile, fileInfo.getFileData().getData());
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override

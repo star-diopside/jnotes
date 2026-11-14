@@ -3,6 +3,7 @@ package jp.gr.java_conf.stardiopside.jnotes.web.controller;
 import jakarta.validation.Valid;
 import jp.gr.java_conf.stardiopside.jnotes.data.entity.FileInfo;
 import jp.gr.java_conf.stardiopside.jnotes.service.FileService;
+import jp.gr.java_conf.stardiopside.jnotes.value.DownloadData;
 import jp.gr.java_conf.stardiopside.jnotes.web.form.FileCreateForm;
 import jp.gr.java_conf.stardiopside.jnotes.web.form.FileEditForm;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.Nullable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -74,11 +81,27 @@ public class FilesController {
         return fileService.findDownloadData(id)
                 .map(downloadData -> ResponseEntity.ok()
                         .headers(headers -> headers.setContentDisposition(builder
-                                .filename(downloadData.getFileName(), StandardCharsets.UTF_8)
+                                .filename(downloadData.fileName(), StandardCharsets.UTF_8)
                                 .build()))
-                        .contentType(parseMediaType(downloadData.getContentType()))
-                        .body(new ByteArrayResource(downloadData.getData())))
+                        .contentType(parseMediaType(downloadData.contentType()))
+                        .body(newDownloadDataResource(downloadData)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    private static Resource newDownloadDataResource(DownloadData downloadData) {
+        try {
+            Path dataTempFile = downloadData.dataTempFile();
+            log.debug("Download data file: {}", dataTempFile);
+            InputStream inputStream = Files.newInputStream(dataTempFile, StandardOpenOption.DELETE_ON_CLOSE);
+            return new InputStreamResource(inputStream) {
+                @Override
+                public long contentLength() throws IOException {
+                    return Files.size(dataTempFile);
+                }
+            };
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @GetMapping("/create")
